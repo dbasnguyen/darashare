@@ -1,0 +1,57 @@
+<div class="fileinfo-card">
+
+  <p style="color:green">loading = {{ loading }}</p>
+  <p style="color:blue">fileInfo = {{ fileInfo | json }}</p>
+
+  <h2>Informations du fichier</h2>
+
+
+
+  <!-- Loader -->
+  <div class="loader" *ngIf="loading">
+    Chargement des informations...
+  </div>
+
+  <!-- Contenu principal -->
+  <div *ngIf="!loading && fileInfo">
+    <p style="color:red">TEMPLATE ACTIF</p>
+
+    <div class="info-row">
+      <span class="label">Nom du fichier :</span>
+      <span class="value">{{ fileInfo.filename }}</span>
+    </div>
+
+    <div class="info-row">
+      <span class="label">Taille :</span>
+      <span class="value">{{ fileInfo.size }} octets</span>
+    </div>
+
+    <div class="info-row">
+      <span class="label">Type :</span>
+      <span class="value">{{ fileInfo.mimeType }}</span>
+    </div>
+
+    <div class="info-row">
+      <span class="label">Expire le :</span>
+      <span class="value">{{ fileInfo.expiresAt | date:'dd/MM/yyyy HH:mm' }}</span>
+    </div>
+
+    <div class="info-row">
+      <span class="label">Lien de téléchargement :</span>
+      <span class="value link">
+        http://localhost:3000/files/download/{{ token }}
+      </span>
+    </div>
+
+    <div class="actions">
+      <button (click)="download()">Télécharger</button>
+      <button (click)="copyLink()">Copier le lien</button>
+    </div>
+  </div>
+
+    <!-- SECTION COMMENTAIRES — À METTRE ICI -->
+    <app-comment-list [fileToken]="token"></app-comment-list>
+  <!-- Erreur -->
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+</div>

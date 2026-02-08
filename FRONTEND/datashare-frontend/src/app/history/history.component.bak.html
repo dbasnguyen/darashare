@@ -1,0 +1,51 @@
+<div class="history-card">
+  <h2>Historique de vos fichiers</h2>
+
+  <p *ngIf="loading">Chargement de votre historique...</p>
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <div *ngIf="!loading && files.length === 0">
+    Aucun fichier envoye pour le moment.
+  </div>
+
+  <table *ngIf="!loading && files.length > 0" class="history-table">
+    <thead>
+      <tr>
+        <th>Nom du fichier</th>
+        <th>Taille</th>
+        <th>Date d'envoi</th>
+        <th>Date d'expiration</th>
+        <th>Statut</th>
+        <th>Téléchargement</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let f of files">
+        <td>{{ f.filename }}</td>
+        <td>{{ f.size }} octets</td>
+
+        <!-- Correction ici -->
+        <td>{{ f.createdAt ? (f.createdAt | date: 'dd/MM/yyyy HH:mm') : '—' }}</td>
+        <td>{{ f.expiresAt ? (f.expiresAt | date: 'dd/MM/yyyy HH:mm') : '—' }}</td>
+
+        <td>
+          <span [ngClass]="getStatusClass(f)">
+            {{ getStatusLabel(f) }}
+          </span>
+        </td>
+        <td>
+          <a
+            [href]="'http://localhost:3000/files/download/' + f.downloadToken"
+            target="_blank"
+          >
+            Télécharger
+          </a>
+        </td>
+        <td>
+          <button (click)="deleteFile(f)">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

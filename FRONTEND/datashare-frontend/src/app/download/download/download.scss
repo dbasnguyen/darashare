@@ -1,0 +1,77 @@
+.download-container,
+.download-card {
+  max-width: 600px;
+  margin: 60px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 26px;
+}
+
+.download-input {
+  width: 100%;
+  max-width: 500px;
+  padding: 15px;
+  font-size: 18px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.btn-open {
+  background: #4caf50;
+  color: white;
+  padding: 14px 28px;
+  font-size: 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.loader {
+  font-size: 16px;
+  color: #555;
+}
+
+.info {
+  margin-top: 15px;
+  font-size: 16px;
+  color: #444;
+}
+
+.download-btn {
+  margin-top: 20px;
+  padding: 14px 30px;
+  background: #3f51b5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.error {
+  margin-top: 20px;
+  color: red;
+  font-weight: bold;
+}
+
+.password-block {
+  margin-top: 20px;
+}
+
+.password-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}

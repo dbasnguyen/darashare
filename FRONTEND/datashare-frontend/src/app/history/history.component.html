@@ -1,0 +1,112 @@
+<!--
+  ================================
+  TEMPLATE : HISTORY
+  ================================
+  Rôle :
+  - Afficher la liste des fichiers de l'utilisateur
+  - Proposer les actions : Télécharger, Copier lien, Supprimer
+  - Afficher le statut (Valide / Expiré)
+  - Afficher un bouton pour supprimer tous les fichiers
+
+  Notes pédagogiques :
+  - *ngIf : affichage conditionnel
+  - *ngFor : boucle sur les fichiers
+  - date pipe : formatage des dates
+  - ngClass : classes CSS dynamiques
+-->
+
+<div class="history-container">
+
+  <h2>Vos fichiers</h2>
+
+  <!-- Affichage du chargement -->
+  <div *ngIf="loading" class="loading">
+    Chargement…
+  </div>
+
+  <!-- Affichage d'une erreur éventuelle -->
+  <div *ngIf="!loading && errorMessage" class="error">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Tableau des fichiers -->
+  <table *ngIf="!loading && files.length > 0" class="history-table">
+
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Taille</th>
+        <th>Envoyé le</th>
+        <th>Expire le</th>
+        <th>Statut</th>
+        <th>Télécharger</th>
+        <th>Copier lien</th>
+        <th>Supprimer</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      <!-- Boucle sur chaque fichier -->
+      <tr *ngFor="let f of files">
+
+        <!-- Nom du fichier -->
+        <td>{{ f.originalName }}</td>
+
+        <!-- Taille -->
+        <td>{{ f.size }} octets</td>
+
+        <!-- Date d'envoi -->
+        <td>{{ f.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+
+        <!-- Date d'expiration -->
+        <td>{{ f.expiresAt | date:'dd/MM/yyyy HH:mm' }}</td>
+
+        <!-- Statut -->
+        <td>
+          <span [ngClass]="getStatusClass(f)">
+            {{ getStatusLabel(f) }}
+          </span>
+        </td>
+
+        <!-- Bouton Télécharger (backend) -->
+        <td>
+          <button class="btn-download" (click)="downloadFile(f)">
+            ⬇️ Télécharger
+          </button>
+        </td>
+
+        <!-- Bouton Copier lien (Angular) -->
+        <td>
+          <button class="btn-copy" (click)="copyLink(f)">
+            📋 Copier lien
+          </button>
+        </td>
+
+        <!-- Bouton Supprimer -->
+        <td>
+          <button class="btn-delete" (click)="deleteFile(f)">
+            🗑️
+          </button>
+        </td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+
+  <!-- Bouton supprimer tous les fichiers -->
+  <button
+    *ngIf="!loading && files.length > 0"
+    class="delete-all"
+    (click)="deleteAll()">
+    Supprimer tous les fichiers
+  </button>
+
+  <!-- Message si aucun fichier -->
+  <p *ngIf="!loading && files.length === 0" class="empty">
+    Vous n'avez encore aucun fichier.
+  </p>
+
+</div>

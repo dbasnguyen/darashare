@@ -1,0 +1,100 @@
+.upload-card {
+  max-width: 480px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.file-input {
+  margin-bottom: 16px;
+}
+
+select {
+  width: 100%;
+  padding: 8px;
+  margin: 12px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.btn-primary {
+  background: #007bff;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.btn-primary:hover {
+  background: #0069d9;
+}
+
+.btn-secondary {
+  background: #f0f0f0;
+  padding: 10px 16px;
+  border-radius: 6px;
+  margin-top: 16px;
+  cursor: pointer;
+}
+
+.loading {
+  font-style: italic;
+  color: #555;
+}
+
+.error {
+  color: #d9534f;
+  margin-top: 12px;
+}
+
+.success-box {
+  margin-top: 20px;
+  padding: 16px;
+  background: #e8f8e8;
+  border-radius: 8px;
+}
+
+.success-title {
+  font-weight: bold;
+  color: #2d7a2d;
+}
+
+.download-link {
+  font-family: monospace;
+  background: #f7f7f7;
+  padding: 6px;
+  border-radius: 6px;
+  word-break: break-all;
+}
+
+.copy-btn,
+.info-btn {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.copy-btn {
+  background: #28a745;
+  color: white;
+}
+
+.info-btn {
+  background: #17a2b8;
+  color: white;
+}

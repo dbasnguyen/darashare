@@ -1,0 +1,33 @@
+.history-card {
+  padding: 20px;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.history-table th,
+.history-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.history-table th {
+  background-color: #f5f5f5;
+}
+
+.status-valid {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.status-expired {
+  color: #c62828;
+  font-weight: 600;
+}
+
+.error {
+  color: #c62828;
+}

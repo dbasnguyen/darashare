@@ -1,0 +1,19 @@
+<!-- Layout global de l'application -->
+<header class="header">
+  <h1>DataShare</h1>
+
+  <nav>
+    <a routerLink="/dashboard">Upload</a>
+    <a routerLink="/history">Historique</a>
+    <a routerLink="/login">Déconnexion</a>
+  </nav>
+</header>
+
+<main class="content">
+  <!-- Ici s'affichent les pages -->
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="footer">
+  <p>© 2026 - DataShare</p>
+</footer>

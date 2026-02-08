@@ -1,0 +1,139 @@
+.home-container {
+  max-width: 700px;
+  margin: 60px auto;
+  text-align: center;
+
+  h1 {
+    font-size: 32px;
+    color: #333;
+  }
+.user-access {
+  margin-top: 50px;
+  text-align: center;
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 15px;
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      color: white;
+      transition: background 0.3s ease;
+
+      &.login {
+        background-color: #607d8b;
+
+        &:hover {
+          background-color: #455a64;
+        }
+      }
+
+      &.register {
+        background-color: #ff9800;
+
+        &:hover {
+          background-color: #fb8c00;
+        }
+      }
+    }
+  }
+
+  .section-hint {
+    font-size: 14px;
+    color: #666;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+  .subtitle {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #666;
+  }
+
+  .actions {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+
+    .btn {
+      padding: 12px 25px;
+      border-radius: 6px;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+
+      &.primary {
+        background: #3f51b5;
+      }
+
+      &.secondary {
+        background: #4caf50;
+      }
+    }
+  }
+
+  .auth-actions {
+    margin-top: 50px;
+
+    .auth-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .auth-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+
+      .btn.login {
+        background: #607d8b;
+      }
+
+      .btn.register {
+        background: #ff9800;
+      }
+    }
+
+    .auth-hint {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #666;
+    }
+  }
+
+  .user-section {
+    margin-top: 40px;
+
+    .welcome-user {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    .btn.logout {
+      margin-top: 30px;
+      background: #e53935;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+    }
+  }
+}

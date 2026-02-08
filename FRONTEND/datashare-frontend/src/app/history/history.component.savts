@@ -1,0 +1,163 @@
+/**
+ * ================================
+ * COMPONENT : HISTORY
+ * ================================
+ * Rôle :
+ * - Charger la liste des fichiers de l'utilisateur
+ * - Afficher les infos (nom, taille, dates, statut)
+ * - Supprimer un fichier
+ * - Supprimer TOUS les fichiers
+ * - Rafraîchir l'écran automatiquement
+ *
+ * Notes pédagogiques :
+ * - Composant standalone → imports dans @Component
+ * - ChangeDetectorRef → indispensable pour forcer Angular à rafraîchir l'UI
+ */
+
+import { Component, ChangeDetectorRef } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { NgIf, NgFor, DatePipe, NgClass } from '@angular/common';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-history',
+  standalone: true,
+
+  /**
+   * Imports nécessaires pour le template HTML
+   * - NgIf : *ngIf
+   * - NgFor : *ngFor
+   * - DatePipe : formatage des dates
+   * - NgClass : classes dynamiques
+   */
+  imports: [CommonModule, NgIf, NgFor, DatePipe, NgClass],
+
+  templateUrl: './history.component.html',
+  styleUrls: ['./history.component.scss'],
+})
+export class HistoryComponent {
+
+  /**
+   * ================================
+   * VARIABLES D'ÉTAT DU COMPOSANT
+   * ================================
+   */
+  files: any[] = [];       // Liste des fichiers
+  loading = true;          // Affiche "Chargement..."
+  errorMessage = '';       // Message d'erreur éventuel
+
+  /**
+   * Injection des services :
+   * - HttpClient : communication avec le backend
+   * - ChangeDetectorRef : force Angular à rafraîchir l'écran
+   */
+  constructor(
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  /**
+   * ngOnInit()
+   * Appelé automatiquement à l'arrivée sur la page
+   */
+  ngOnInit() {
+    console.log(">>> HISTORY COMPONENT LOADED <<<");
+    this.loadHistory();
+  }
+
+  /**
+   * ================================
+   * CHARGEMENT DE L'HISTORIQUE
+   * ================================
+   * - Récupère le token
+   * - Appelle GET /files/my
+   * - Met à jour la liste
+   * - Force Angular à rafraîchir l'écran
+   */
+  loadHistory() {
+    this.loading = true;
+
+    const token = localStorage.getItem('token');
+
+    this.http.get<any[]>('http://localhost:3000/files/my', {
+      headers: { Authorization: `Bearer ${token}` }
+    }).subscribe({
+      next: (data) => {
+        this.files = data;
+        this.loading = false;
+        this.cdr.detectChanges(); // 🔥 Mise à jour UI
+      },
+      error: (err) => {
+        console.error('Error loading history', err);
+        this.errorMessage = 'Impossible de charger votre historique.';
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+  /**
+   * ================================
+   * SUPPRESSION D'UN FICHIER
+   * ================================
+   */
+  deleteFile(file: any) {
+    const confirmDelete = confirm(
+      `Voulez-vous vraiment supprimer le fichier "${file.originalName}" ? Cette action est irreversible.`
+    );
+    if (!confirmDelete) return;
+
+    const token = localStorage.getItem('token');
+
+    this.http.delete(`http://localhost:3000/files/${file.id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).subscribe({
+      next: () => {
+        this.loadHistory(); // 🔥 Rafraîchit l'écran après suppression
+      },
+      error: (err) => {
+        console.error('Error deleting file', err);
+        alert('Erreur lors de la suppression du fichier.');
+      },
+    });
+  }
+
+  /**
+   * ================================
+   * SUPPRESSION DE TOUS LES FICHIERS
+   * ================================
+   */
+  deleteAll() {
+    const confirmDelete = confirm(
+      "Voulez-vous vraiment supprimer TOUS vos fichiers ? Cette action est irréversible."
+    );
+    if (!confirmDelete) return;
+
+    const token = localStorage.getItem('token');
+
+    this.http.delete('http://localhost:3000/files/my', {
+      headers: { Authorization: `Bearer ${token}` }
+    }).subscribe({
+      next: () => {
+        this.loadHistory(); // 🔥 Rafraîchit l'écran après suppression globale
+      },
+      error: (err) => {
+        console.error('Error deleting all files', err);
+        alert('Erreur lors de la suppression de tous les fichiers.');
+      }
+    });
+  }
+
+  /**
+   * ================================
+   * UTILITAIRES POUR LE STATUT
+   * ================================
+   */
+  getStatusLabel(file: any): string {
+    return file.isExpired ? 'Expiré' : 'Valide';
+  }
+
+  getStatusClass(file: any): string {
+    return file.isExpired ? 'status-expired' : 'status-valid';
+  }
+}

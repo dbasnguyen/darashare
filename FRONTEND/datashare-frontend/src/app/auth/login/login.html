@@ -1,0 +1,24 @@
+<div class="auth-card">
+
+  <h2>Connexion</h2>
+
+  <form (ngSubmit)="login()" #form="ngForm">
+
+    <label>Email</label>
+    <input type="email" name="email" [(ngModel)]="email" required email>
+
+    <label>Mot de passe</label>
+    <input type="password" name="password" [(ngModel)]="password" required>
+
+    <button type="submit" [disabled]="form.invalid">Se connecter</button>
+
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  </form>
+
+  <p class="hint">
+    Pas encore de compte ?
+    <a routerLink="/register">Créer un compte</a>
+  </p>
+
+</div>

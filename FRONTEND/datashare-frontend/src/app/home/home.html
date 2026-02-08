@@ -1,0 +1,53 @@
+<div class="home-container">
+
+  <h1>Bienvenue sur DataShare</h1>
+
+  <p class="subtitle">
+    Partagez vos fichiers en toute simplicité, sécurité et rapidité.
+  </p>
+
+  <!-- Version NON connectée -->
+  <div *ngIf="!isLoggedIn" class="guest-section">
+
+    <div class="actions">
+      <a routerLink="/download" class="btn secondary">
+
+        ⬇️ Télécharger un fichier
+      </a>
+    </div>
+
+  <div class="user-access">
+
+  <h3 class="section-title">Espace utilisateur</h3>
+
+  <div class="button-group">
+    <a routerLink="/login" class="btn login">🔐 Se connecter</a>
+    <a routerLink="/register" class="btn register">🆕 Créer un compte</a>
+  </div>
+
+  <p class="section-hint">
+    Créez un compte pour envoyer des fichiers, gérer votre historique et supprimer vos uploads.
+  </p>
+
+</div>
+
+
+  </div>
+
+  <!-- Version CONNECTÉE -->
+  <div *ngIf="isLoggedIn" class="user-section">
+
+    <p class="welcome-user">
+      Bonjour <strong>{{ userEmail }}</strong>
+    </p>
+
+    <div class="actions">
+      <a routerLink="/upload" class="btn primary">📤 Uploader un fichier</a>
+      <a routerLink="/history" class="btn secondary">📁 Historique</a>
+    </div>
+
+    <button class="btn logout" (click)="logout()">🚪 Se déconnecter</button>
+
+  </div>
+
+</div>

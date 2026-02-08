@@ -1,0 +1,66 @@
+<!-- CAS 1 : aucun token -->
+<div *ngIf="!token" class="download-container">
+  <h2>Téléchargement d’un fichier</h2>
+
+  <p>Collez ici votre lien de téléchargement :</p>
+
+  <input
+    type="text"
+    [(ngModel)]="downloadLink"
+    placeholder="http://localhost:4200/download/xxxxxx"
+    class="download-input"
+  />
+
+  <button class="btn-open" (click)="goToDownload()">
+    Ouvrir
+  </button>
+</div>
+
+<!-- CAS 2 : token présent -->
+<div *ngIf="token" class="download-card">
+  <h2>Téléchargement du fichier</h2>
+
+  <div class="loader" *ngIf="loading">
+    Préparation du téléchargement…
+  </div>
+
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <div *ngIf="!loading && !errorMessage && fileInfo">
+
+    <div class="file-details">
+      <p><strong>Nom :</strong> {{ fileInfo.filename || fileInfo.originalName }}</p>
+      <p><strong>Taille :</strong> {{ fileInfo.size }} octets</p>
+      <p><strong>Type :</strong> {{ fileInfo.mimeType }}</p>
+      <p><strong>Expire le :</strong> {{ fileInfo.expiresAt | date:'dd/MM/yyyy HH:mm' }}</p>
+    </div>
+
+    <!-- CAS : fichier protégé -->
+    <div *ngIf="needsPassword" class="password-block">
+      <p>Ce fichier est protégé par mot de passe.</p>
+
+      <input
+        type="password"
+        [(ngModel)]="password"
+        placeholder="Entrez le mot de passe"
+        class="password-input"
+      />
+
+      <button class="download-btn" (click)="download()" [disabled]="downloading || !password">
+        {{ downloading ? 'Téléchargement…' : 'Télécharger' }}
+      </button>
+
+      <p class="error" *ngIf="wrongPassword">{{ errorMessage }}</p>
+    </div>
+
+    <!-- CAS : fichier non protégé -->
+    <div *ngIf="!needsPassword">
+      <p class="info">Votre fichier est prêt à être téléchargé.</p>
+
+      <button class="download-btn" (click)="download()">
+        ⬇️ Télécharger maintenant
+      </button>
+    </div>
+
+  </div>
+</div>

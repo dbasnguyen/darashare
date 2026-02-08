@@ -1,0 +1,106 @@
+<!--
+  ================================
+  COMPOSANT : HISTORIQUE DES FICHIERS
+  ================================
+  Structure générale :
+  - Un conteneur principal (history-card)
+  - Un titre
+  - Messages d'état (loading, erreur, vide)
+  - Bouton global "Supprimer tous mes fichiers"
+  - Tableau listant les fichiers
+-->
+
+<div class="history-card">
+
+  <!-- ===== TITRE ===== -->
+  <h2>Historique de vos fichiers</h2>
+
+  <!-- ===== MESSAGE DE CHARGEMENT ===== -->
+  <p *ngIf="loading">Chargement de votre historique...</p>
+
+  <!-- ===== MESSAGE D'ERREUR ===== -->
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <!-- ===== CAS : AUCUN FICHIER ===== -->
+  <div *ngIf="!loading && files.length === 0">
+    Aucun fichier envoyé pour le moment.
+  </div>
+
+  <!--
+    ===== BOUTON : SUPPRIMER TOUS LES FICHIERS =====
+    Important :
+    - Le bouton doit être placé AVANT le tableau
+    - Il ne doit PAS être dans <table>
+    - On l'affiche seulement si des fichiers existent
+  -->
+  <button
+    *ngIf="!loading && files.length > 0"
+    class="btn-danger"
+    (click)="deleteAll()"
+  >
+    Supprimer tous mes fichiers
+  </button>
+
+  <!--
+    ===== TABLEAU DES FICHIERS =====
+    Affiché uniquement si :
+    - le chargement est terminé
+    - il y a au moins 1 fichier
+  -->
+  <table *ngIf="!loading && files.length > 0" class="history-table">
+
+    <!-- ===== ENTÊTES DU TABLEAU ===== -->
+    <thead>
+      <tr>
+        <th>Nom du fichier</th>
+        <th>Taille</th>
+        <th>Date d'envoi</th>
+        <th>Date d'expiration</th>
+        <th>Statut</th>
+        <th>Téléchargement</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <!-- ===== LIGNES DU TABLEAU ===== -->
+    <tbody>
+      <tr *ngFor="let f of files">
+
+        <!-- Nom -->
+        <td>{{ f.originalName }}</td>
+
+        <!-- Taille -->
+        <td>{{ f.size }} octets</td>
+
+        <!-- Dates -->
+        <td>{{ f.createdAt ? (f.createdAt | date: 'dd/MM/yyyy HH:mm') : '—' }}</td>
+        <td>{{ f.expiresAt ? (f.expiresAt | date: 'dd/MM/yyyy HH:mm') : '—' }}</td>
+
+        <!-- Statut (Valide / Expiré) -->
+        <td>
+          <span [ngClass]="getStatusClass(f)">
+            {{ getStatusLabel(f) }}
+          </span>
+        </td>
+
+        <!-- Lien de téléchargement -->
+        <td>
+          <a
+            [href]="'http://localhost:3000/files/download/' + f.downloadToken"
+            target="_blank"
+          >
+            Télécharger
+          </a>
+        </td>
+
+        <!-- Bouton de suppression -->
+        <td>
+          <button (click)="deleteFile(f)">Supprimer</button>
+        </td>
+
+      </tr>
+    </tbody>
+
+  </table>
+
+</div>

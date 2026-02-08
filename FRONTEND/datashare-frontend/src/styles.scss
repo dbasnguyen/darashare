@@ -1,0 +1,23 @@
+:root {
+  --primary: #3f51b5;
+  --secondary: #4caf50;
+  --text-dark: #333;
+  --text-light: #666;
+  --bg-light: #f9f9f9;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background: #fafafa;
+  margin: 0;
+  padding: 0;
+  color: var(--text-dark);
+}
+
+button, a {
+  transition: 0.2s ease;
+}
+
+button:hover, a:hover {
+  opacity: 0.85;
+}

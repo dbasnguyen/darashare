@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: datashare_postgres
+    environment:
+      POSTGRES_USER: dbasnguyen
+      POSTGRES_PASSWORD: My1995lan
+      POSTGRES_DB: datashare
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - datashare_net
+
+  backend:
+    build:
+      context: ./backend
+    container_name: datashare_backend
+    env_file:
+      - ./backend/.env.docker
+    depends_on:
+      - postgres
+    ports:
+      - "3000:3000"
+    networks:
+      - datashare_net
+
+volumes:
+  postgres_data:
+
+networks:
+  datashare_net:
