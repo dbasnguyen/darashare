@@ -1,122 +1,154 @@
-# 📦 DataShare — Backend API (NestJS + PostgreSQL)
-
-DataShare est une API backend permettant l’upload et le téléchargement sécurisé de fichiers via un lien temporaire.  
-Le projet utilise **NestJS**, **TypeORM**, **PostgreSQL**, **JWT**, et **Multer** pour la gestion des fichiers.
-
----
-
-## 🚀 Fonctionnalités principales
-
-### 🔐 Authentification (JWT)
-- Inscription : `POST /auth/register`
-- Connexion : `POST /auth/login`
-- Génération d’un token JWT
-- Protection des routes via `JwtAuthGuard`
-
-### 📤 Upload de fichiers
-- Upload via `POST /files/upload`
-- Accessible uniquement aux utilisateurs authentifiés
-- Stockage physique dans `/uploads`
-- Sauvegarde des métadonnées en base
-
-### 📥 Téléchargement sécurisé
-- Téléchargement via token unique : `GET /files/download/:token`
-- Expiration automatique du lien (24h)
-- Vérification du token + expiration
+# DataShare  
+Application web de partage de fichiers sécurisée  
+**Frontend : Angular**  
+**Backend : NestJS**  
+**Base de données : PostgreSQL**
 
 ---
 
-## 🗄️ Modèle de données
+## 📌 1. Présentation du projet
 
-### **User**
-| Champ | Type | Description |
-|-------|------|-------------|
-| id | number | Identifiant unique |
-| email | string | Unique, utilisé pour le login |
-| password | string | Hashé (bcrypt) |
-| files | relation | OneToMany → File |
-| created_at | date | Auto |
-| updated_at | date | Auto |
+DataShare est une application web permettant :
 
-### **File**
-| Champ | Type | Description |
-|-------|------|-------------|
-| id | number | Identifiant unique |
-| filename | string | Nom stocké physiquement |
-| originalName | string | Nom d’origine |
-| mimeType | string | Type MIME |
-| size | number | Taille en octets |
-| owner | relation | ManyToOne → User |
-| tags | string[] | Optionnel |
-| downloadToken | string | Token unique |
-| downloadTokenExpiresAt | date | Expiration du lien |
-| createdAt | date | Auto |
-| updatedAt | date | Auto |
+- l’authentification sécurisée des utilisateurs  
+- le téléversement de fichiers  
+- la génération de liens de téléchargement  
+- la protection optionnelle par mot de passe  
+- la gestion de l’historique des fichiers  
+- le téléchargement sécurisé via token  
+
+L’objectif est de proposer une expérience simple, fluide et sécurisée pour partager des fichiers.
 
 ---
 
-## 🛠️ Technologies utilisées
+## 📌 2. Architecture globale
 
-- **NestJS**
-- **TypeORM**
-- **PostgreSQL**
-- **Multer**
-- **JWT**
-- **bcrypt**
-- **Node.js**
+### 🟦 Frontend (Angular)
+- Composants : Login, Register, Upload, Download, History, Home  
+- Services : AuthService, UploadService  
+- Routing : /login, /register, /upload, /download/:token, /history  
+
+### 🟦 Backend (NestJS)
+- Modules : AuthModule, UsersModule, FilesModule  
+- Controllers : AuthController, FilesController  
+- Services : AuthService, UsersService, FilesService  
+- Sécurité : JWT Guard, bcrypt, ValidationPipe  
+
+### 🟦 Base de données (PostgreSQL)
+Tables utilisées :
+- `users`
+- `files`
+
+Relation :  
+`User (1) ---- (N) File`
 
 ---
 
-## ⚙️ Installation & Démarrage
+## 📌 3. Installation et exécution
 
-### 1️⃣ Cloner le projet
+### 🟦 Backend
+
 ```bash
-git clone <url-du-repo>
-cd datashare/backend
-
-### 2️⃣ Installer les dépendances
-```bash
+cd backend
 npm install
-
-### 3️⃣ Configurer les variables d’environnement
-## Créer un fichier .env :
-
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=postgres
-DB_NAME=datashare
-JWT_SECRET=super-secret-key
-PORT=3000
-
-4️⃣ Lancer le backend
+cp .env.example .env
 npm run start:dev
-Le backend démarre sur :
-👉 http://localhost:3000
+```
 
+### 🟦 Frontend
 
-src/
- ├── auth/
- │    ├── auth.controller.ts
- │    ├── auth.service.ts
- │    ├── auth.module.ts
- │    └── strategies/jwt.strategy.ts
- │
- ├── users/
- │    ├── user.entity.ts
- │    ├── users.service.ts
- │    └── users.module.ts
- │
- ├── files/
- │    ├── file.entity.ts
- │    ├── files.service.ts
- │    ├── files.controller.ts
- │    └── files.module.ts
- │
- ├── app.module.ts
- └── main.ts
+```bash
+cd FRONTEND/datashare-frontend
+npm install
+ng serve
+```
 
-uploads/   ← stockage physique des fichiers
+L’application sera disponible sur :  
+👉 http://localhost:4200
 
+---
 
+## 📌 4. Scripts SQL
 
+Les scripts se trouvent dans `/scripts` :
+
+- `init_db.sql`  
+- `create_tables.sql`  
+- `seed_admin.sql` (optionnel)
+
+---
+
+## 📌 5. Documentation API
+
+### 🔹 Auth
+
+**POST /auth/register**  
+Créer un utilisateur.
+
+**POST /auth/login**  
+Retourne un JWT.
+
+### 🔹 Files
+
+**POST /files/upload**  
+Upload multipart + options.
+
+**GET /files/info/:token**  
+Métadonnées du fichier.
+
+**POST /files/download/:token**  
+Téléchargement sécurisé.
+
+**GET /files/my**  
+Liste des fichiers de l’utilisateur.
+
+**DELETE /files/:id**  
+Supprimer un fichier.
+
+---
+
+## 📌 6. Sécurité
+
+- Hash bcrypt pour tous les mots de passe  
+- JWT obligatoire pour toutes les routes privées  
+- Vérification stricte du propriétaire  
+- Validation DTO systématique  
+- Aucun fichier protégé accessible en GET  
+- Vérification d’expiration des tokens  
+
+---
+
+## 📌 7. Tests & Qualité
+
+Tests réalisés :
+
+- Unitaires : AuthService, FilesService  
+- Intégration : Upload, Download  
+- E2E : Parcours complet utilisateur  
+- Couverture > 70 %  
+
+Fichiers associés :
+
+- TESTING.md  
+- SECURITY.md  
+- PERF.md  
+- MAINTENANCE.md  
+
+---
+
+## 📌 8. Utilisation de l’IA
+
+L’IA a été utilisée :
+
+- pour générer des squelettes de composants  
+- pour accélérer la mise en place du flux US05 (téléchargement sécurisé)  
+- sous supervision humaine stricte  
+
+Toutes les contributions IA ont été revues, corrigées et validées manuellement.
+
+---
+
+## 📌 9. Auteur
+
+**Nguyen Quang**  
+DBA & Développeur Web Fullstack (Angular / NestJS)
