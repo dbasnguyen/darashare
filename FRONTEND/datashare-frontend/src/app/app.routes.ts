@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 // Auth pages
 import { Login } from './auth/login/login';
-import { Register } from './auth/register/register.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 // Main pages
 import { Home } from './home/home';
@@ -21,30 +21,32 @@ import { authGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
 
-  // Auth
+  // -------------------------
+  // AUTHENTIFICATION
+  // -------------------------
   { path: 'login', component: Login },
-  { path: 'register', component: Register },
+  { path: 'register', component: RegisterComponent },
 
-  // Pages principales
+  // -------------------------
+  // PAGES PRINCIPALES
+  // -------------------------
   { path: 'home', component: Home },
   { path: 'upload', component: Upload, canActivate: [authGuard] },
 
   {
     path: 'history',
-    loadComponent: () => import('./history/history.component').then(m => m.HistoryComponent),
+    loadComponent: () =>
+      import('./history/history.component').then(m => m.HistoryComponent),
     canActivate: [authGuard],
     runGuardsAndResolvers: 'always'
   },
 
-  // ============================
-  //   TÉLÉCHARGEMENT (CORRIGÉ)
-  // ============================
+  // -------------------------
+  // TÉLÉCHARGEMENT
+  // -------------------------
 
   // 1) Page SANS token → champ "Collez votre lien"
-  {
-    path: 'download',
-    component: Download
-  },
+  { path: 'download', component: Download },
 
   // 2) Page AVEC token → infos du fichier
   {
@@ -56,15 +58,22 @@ export const routes: Routes = [
   // Page intermédiaire FileInfo
   {
     path: 'fichier/:token',
-    loadComponent: () => import('./file-info/file-info').then(m => m.FileInfo)
+    loadComponent: () =>
+      import('./file-info/file-info').then(m => m.FileInfo)
   },
 
-  // Page d’erreur
+  // -------------------------
+  // ERREURS
+  // -------------------------
   { path: 'error', component: Error },
 
-  // Redirection par défaut
+  // -------------------------
+  // REDIRECTION PAR DÉFAUT
+  // -------------------------
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 
+  // -------------------------
   // 404
+  // -------------------------
   { path: '**', component: NotFound }
 ];
